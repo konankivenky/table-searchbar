@@ -1,0 +1,96 @@
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+
+    <div class="container my-5 mx-5">
+        <div class="form-inline  d-flex justify-content-end my-2">
+            <label>search:</label>
+            <input type="search" id="getdata" class="form-control ">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>si.no</th>
+                    <th>name</th>
+                    <th>phone</th>
+                    <th>address</th>    
+                    <th>edit</th>      
+                </tr>
+            </thead>
+            <tbody id="tablecontent"></tbody>
+
+        </table>
+       
+        
+    </div>
+   
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+
+<script> 
+        
+     var response;
+  
+       
+             $(function(){
+        
+             $.ajax({
+                     "url":"https://jsonplaceholder.typicode.com/users",
+                     "method":"GET",
+                     "success":function(res){
+                        
+                         prepareTable(res);
+                     },
+                     "error":function(err){
+                         console.log(err);
+                     }
+                 });
+             })
+            
+            function prepareTable(res){
+                $("#tablecontent").html("");
+        
+            res.forEach(function(obj,index){
+                
+
+                   var  table="<tr>"+
+                             "<td>"+obj.id+ "</td>"+ 
+                             "<td>"+obj.name+ "</td>"+ 
+                             "<td>"+obj.phone+ "</td>"+ 
+                             "<td>"+obj.address.city+ "</td>"+ 
+                             "<td>"+
+                             '<button class=" btn btn-success">'+"edit"+'</button>'+
+                              "</td></tr>";
+                     $("#tablecontent").append(table);
+                                
+                 });
+                 response=res;
+             }   
+ 
+ 
+             $("#getdata").keyup(function(event){
+                 var input=event.target;
+                 var inputdata=$(input).val();
+ 
+                var givendata= response.filter(function(item,index){
+                    return item.name.indexOf(inputdata) !=-1;
+                });
+               prepareTable(givendata);
+             });
+             
+ 
+ 
+ 
+ 
+            
+             </script>
